@@ -98,7 +98,7 @@ function App() {
         setQuaketext(null);
         break;
     }
-  }, [quakeId]);
+  }, [quakeId, quakeprop]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -107,7 +107,7 @@ function App() {
   return (
     <div className="  flex justify-center items-center ">
       <div className="flex justify-center items-center h-screen ">
-        <section className="flex  text-white   items-center  bg-black/50  backdrop-blur-sm -translate-x-32  mx-96">
+        <section className="flex  text-white   items-center  bg-black/50  backdrop-blur-sm -translate-x-32 md:mx-32  lg:mx-96">
           {quakeId &&
             (() => {
               const selectedQuake = earthquakes.find((q) => q.id === quakeId);
@@ -165,13 +165,13 @@ function App() {
         </section>
       </div>
 
-      <ul className="flex flex-col absolute bottom-0 min-h-screen backdrop-blur-md bg-black/40 right-0">
+      <ul className="flex flex-col md:absolute bottom-0 min-h-screen backdrop-blur-md bg-black/40 right-0">
         <h1 className=" text-4xl rounded-2xl  px-2 mt-6   mx-5 text-white ">
           Recent Earthquakes
         </h1>
         {earthquakes.map((quake) => (
           <button
-            className="flex-1 text-start  p-7 px-5  transition-all text-white hover:bg-black/25 "
+            className="flex-1 text-start max-lg:pointer-events-none  p-7 px-5  transition-all text-white hover:bg-black/25 "
             key={quake.id}
             onClick={() => handleClick(quake)}
           >
