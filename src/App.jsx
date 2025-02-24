@@ -7,6 +7,7 @@ function App() {
   const [quakeId, setQuakeId] = useState(null);
   const [quakeprop, setQuakeprop] = useState(null);
   const [quaketext, setQuaketext] = useState(null);
+  const [latestQuakeId, setLatestQuakeId] = useState(null);
   const apiUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query";
   const params = {
     format: "geojson",
@@ -26,10 +27,38 @@ function App() {
       });
   };
   useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  
+    const checkNewEarthquakes = (data) => {
+      if (data.features.length > 0) {
+        const latestQuake = data.features[0];
+        if (latestQuake.id !== latestQuakeId && latestQuake.properties.mag >= 4) {
+          new Notification('New Earthquake Detected!', {
+            body: `${intensity(Math.round(latestQuake.properties.mag))} (${latestQuake.properties.mag}) at ${latestQuake.properties.place}`
+          });
+          setLatestQuakeId(latestQuake.id);
+        }
+      }
+    };
+  
+    const fetchEarthquakes = () => {
+      const url = new URL(apiUrl);
+      url.search = new URLSearchParams(params);
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          setEarthquakes(data.features);
+          setLoading(false);
+          checkNewEarthquakes(data); 
+        });
+    };
+  
     fetchEarthquakes();
     const interval = setInterval(fetchEarthquakes, 30000);
     return () => clearInterval(interval);
-  });
+  }, [latestQuakeId]);
   function intensity(magnitude) {
     if (magnitude <= 4) {
       return "Minor Earthquake";
