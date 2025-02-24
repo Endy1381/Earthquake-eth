@@ -61,25 +61,25 @@ function App() {
   }, [latestQuakeId]);
   function intensity(magnitude) {
     if (magnitude <= 4) {
-      return "Minor Earthquake";
-    }
-    if (magnitude === 5) {
       return "Light Earthquake";
     }
-    if (magnitude === 6) {
+    if (magnitude === 5) {
       return "Moderate Earthquake";
     }
-    if (magnitude === 7) {
+    if (magnitude === 6) {
       return "Strong Earthquake";
     }
-    if (magnitude === 8) {
+    if (magnitude === 7) {
       return "Major Earthquake";
     }
-    if (magnitude === 9) {
+    if (magnitude === 8) {
       return "Great Earthquake";
     }
+    if (magnitude === 9) {
+      return "Extremely large Earthquake";
+    }
     if (magnitude >= 10) {
-      return "Massive Earthquake";
+      return "Unimaginable Earthquake";
     }
   }
   function handleClick(quake) {
